@@ -1,0 +1,17 @@
+{
+  "name": "مدیریت اقساط",
+  "short_name": "اقساط",
+  "description": "مدیریت اقساط وام و خرید اقساطی، آفلاین و روی دستگاه خودت",
+  "lang": "fa",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0B3B35",
+  "theme_color": "#0B3B35",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

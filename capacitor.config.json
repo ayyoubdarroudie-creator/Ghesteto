@@ -1,0 +1,12 @@
+{
+  "appId": "app.aghsat.manager",
+  "appName": "مدیریت اقساط",
+  "webDir": "www",
+  "backgroundColor": "#0A3A34",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": false
+  }
+}
