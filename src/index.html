@@ -1471,7 +1471,7 @@ function helpView(){
     <li><b>بدون اینترنت و سرور:</b> اعلان‌ها توسط خود اندروید زمان‌بندی می‌شوند، پس حتی وقتی برنامه بسته است هم می‌آیند. هر بار برنامه را باز کنی یا پرداختی ثبت کنی، زمان‌بندی دوباره به‌روز می‌شود. اعلان ۶۰ روز آینده زمان‌بندی می‌شود، پس هر چند هفته یک بار برنامه را باز کن.</li>
     <li><b>اعلان آزمایشی</b> نشان می‌دهد اجازه و تنظیمات درست است.</li>
     <li><b>اگر اعلان دیر آمد یا نیامد:</b> در تنظیمات گوشی، برنامهٔ «قسطتو» را از «بهینه‌سازی باتری» مستثنا کن (حالت «بدون محدودیت»). در بعضی گوشی‌ها (شیائومی، سامسونگ، هواوی، اوپو) صرفه‌جویی باتری اعلان را عقب می‌اندازد. اگر دکمهٔ «تنظیم آلارم دقیق» را دیدی، آن را هم فعال کن.</li>
-    <li><b>ویجت:</b> روی صفحهٔ اصلی گوشی انگشتت را نگه دار ← «ویجت‌ها» ← «اقساط». سررسید بعدی، مبلغ و دو سررسید بعدی را نشان می‌دهد و با لمس، برنامه باز می‌شود. ویجت بعد از هر ثبت پرداخت و هر بار باز کردن برنامه به‌روز می‌شود و روزهای باقی‌مانده را خودش هر روز تازه می‌کند.</li></ul>`)}
+    <li><b>ویجت:</b> روی صفحهٔ اصلی گوشی انگشتت را نگه دار ← «ویجت‌ها» ← «اقساط». اگر خالی بود، در تنظیمات، بخش «ویجت صفحهٔ اصلی»، دکمهٔ «به‌روزرسانی ویجت» را بزن و در صورت نیاز ویجت را پاک و دوباره اضافه کن. سررسید بعدی، مبلغ و دو سررسید بعدی را نشان می‌دهد و با لمس، برنامه باز می‌شود. ویجت بعد از هر ثبت پرداخت و هر بار باز کردن برنامه به‌روز می‌شود و روزهای باقی‌مانده را خودش هر روز تازه می‌کند.</li></ul>`)}
 
   ${D('تنظیمات',`<ul>
     <li><b>یادآوری سررسید:</b> چند روز مانده به سررسید، برچسب «سررسید نزدیک» را ببینی.</li>
@@ -1499,9 +1499,9 @@ function helpView(){
 
 
 /* ================= about ================= */
-const APP_VERSION='6.3';
+const APP_VERSION='6.3.1';
 // اطلاعات تماس را اینجا پر کن؛ فقط موردهای پرشده در صفحهٔ «درباره ما» نمایش داده می‌شوند.
-const ABOUT={developer:'شرکت سامان گستر صبح نیشابور',email:'info@sgsn.ir',website:'www.sgsn.ir',telegram:'samangostar_sn'};
+const ABOUT={developer:'شرکت سامان گستر صبح نیشابور',email:'info@sgsn.ir',website:'www.sgsn.ir',telegram:'@samangostar_sn'};
 function aboutView(){
   const c=ABOUT, contact=[];
   if(c.developer) contact.push(`<div class="setrow"><span>سازنده</span><b>${esc(c.developer)}</b></div>`);
@@ -1513,7 +1513,7 @@ function aboutView(){
     <img src="icon-192.png" width="84" height="84" alt="">
     <h2>قسطتو</h2>
     <p>دستیار شخصی برای پیگیری وام‌ها، چک‌ها و اقساط</p>
-    <span class="ver">نسخهٔ ${fa(APP_VERSION.replace('.','٫'))}</span>
+    <span class="ver">نسخهٔ ${fa(APP_VERSION.replace(/\./g,'٫'))}</span>
   </div>
 
   <h2>دربارهٔ برنامه</h2>
@@ -1544,14 +1544,14 @@ function aboutView(){
 
   <h2>اطلاعات فنی</h2>
   <div class="card">
-    <div class="setrow"><span>نسخه</span><b>${fa(APP_VERSION.replace('.','٫'))}</b></div>
+    <div class="setrow"><span>نسخه</span><b>${fa(APP_VERSION.replace(/\./g,'٫'))}</b></div>
     <div class="setrow"><span>تقویم</span><b>شمسی (جلالی)</b></div>
     <div class="setrow"><span>واحد پول</span><b>تومان</b></div>
     <div class="setrow"><span>ذخیره‌سازی</span><b>روی همین دستگاه</b></div>
     <div class="setrow"><span>فونت</span><b>وزیرمتن</b></div>
   </div>
   ${contact.length?`<h2>ارتباط با ما</h2><div class="card">${contact.join('')}</div>`:''}
-  <p class="muted" style="text-align:center;font-size:13px;margin-top:24px">ساخته‌شده با دقت برای مدیریت آرام‌تر اقساط</p>`;
+  <p class="muted" style="text-align:center;font-size:13px;margin-top:24px">ساخته‌شده به سفارش یک دوست</p>`;
 }
 
 const UIS=[
@@ -1589,6 +1589,7 @@ function settingsView(){
         <option value="dark" ${s.theme==='dark'?'selected':''}>تیره</option></select></div>
   </div>
   ${nativeNotifCard()}
+  ${nativeWidgetCard()}
   ${uiCard()}
   <h2>دسته‌بندی‌ها</h2>
   <div class="card">
@@ -1617,11 +1618,10 @@ const IS_NATIVE=!!(window.Capacitor&&typeof window.Capacitor.isNativePlatform===
 // Native share sheet for the backup file (Filesystem + Share plugins). Returns true when handled.
 async function nativeShareFile(text){
   try{
-    const P=window.Capacitor&&window.Capacitor.Plugins;
-    if(!P||!P.Filesystem||!P.Share) return false;
+    if(!window.Capacitor) return false;
     const name=`aghsat-backup-${new Date().toISOString().slice(0,10)}.txt`;
-    const r=await P.Filesystem.writeFile({path:name,data:text,directory:'CACHE',encoding:'utf8'});
-    await P.Share.share({title:'پشتیبان اقساط',text:'پشتیبان برنامهٔ قسطتو',url:r.uri,dialogTitle:'ذخیره یا ارسال پشتیبان'});
+    const r=await NP('Filesystem').writeFile({path:name,data:text,directory:'CACHE',encoding:'utf8'});
+    await NP('Share').share({title:'پشتیبان اقساط',text:'پشتیبان برنامهٔ قسطتو',url:r.uri,dialogTitle:'ذخیره یا ارسال پشتیبان'});
     return true;
   }catch(e){ return /cancel/i.test(String((e&&e.message)||e)); }
 }
@@ -1629,8 +1629,26 @@ async function nativeShareFile(text){
 /* ================= Android app: reminders (local notifications) + home-screen widget ================= */
 const NATIVE_CH='aghsat-reminders';
 const NATIVE_ICON='ic_stat_aghsat';
-const LNP=()=>window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.LocalNotifications;
-const WGT=()=>window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.AghsatWidget;
+// Plugin access that works however the WebView exposes the bridge:
+// 1) Capacitor.Plugins[name]  2) Capacitor.registerPlugin(name)  3) Capacitor.nativePromise(name, method, options)
+const _plugCache={};
+function nativeCall(plugin,method,opts){
+  const C=window.Capacitor;
+  if(!C) return Promise.reject(new Error('Capacitor bridge not available'));
+  try{
+    const direct=C.Plugins&&C.Plugins[plugin];
+    if(direct&&typeof direct[method]==='function') return direct[method](opts||{});
+    if(typeof C.registerPlugin==='function'){
+      const reg=_plugCache[plugin]||(_plugCache[plugin]=C.registerPlugin(plugin));
+      if(reg&&typeof reg[method]==='function') return reg[method](opts||{});
+    }
+    if(typeof C.nativePromise==='function') return C.nativePromise(plugin,method,opts||{});
+  }catch(e){ return Promise.reject(e); }
+  return Promise.reject(new Error('plugin '+plugin+' is unavailable'));
+}
+const NP=name=>new Proxy({},{get:(_,m)=>o=>nativeCall(name,m,o)});
+const LNP=()=>window.Capacitor?NP('LocalNotifications'):null;
+const WGT=()=>window.Capacitor?NP('AghsatWidget'):null;
 let _chReady=false;
 async function ensureChannel(){
   const P=LNP(); if(!P||_chReady) return;
@@ -1665,14 +1683,15 @@ function nativePlan(){
   });
 }
 // Data for the home-screen widget: texts are formatted here, the widget only displays them.
-function pushWidget(){
-  const W=WGT(); if(!W) return;
+async function pushWidget(){
+  const W=WGT(); if(!W) return {ok:false,error:'پل برنامه با اندروید در دسترس نیست'};
   try{
     const t=todayJdn(), base=g2d(1970,1,1), cur=d2j(t), all=allRows().filter(r=>!r.paid).sort((a,b)=>a.jdn-b.jdn||a.i-b.i);
     const monthLeft=sum(all.filter(r=>r.jdn<t||(r.jy===cur.jy&&r.jm===cur.jm)));
     const payload={updated:Date.now(),m:money(monthLeft),rows:all.slice(0,3).map(r=>({t:r.item.title,a:money(r.amount),d:fmtDate(r.jdn),day:r.jdn-base,k:rowNameRaw(r)}))};
-    const res=W.update({json:JSON.stringify(payload)}); if(res&&res.catch) res.catch(()=>{});
-  }catch(_){}
+    await W.update({json:JSON.stringify(payload)});
+    return {ok:true,count:payload.rows.length};
+  }catch(e){ return {ok:false,error:String((e&&e.message)||e)}; }
 }
 async function nativeSync(){
   pushWidget();
@@ -1703,6 +1722,11 @@ async function nativeEnable(){
     if(perm.display!=='granted'){ state.settings.notify=false; await saveState(); render(); toast('اجازهٔ اعلان داده نشد. هر وقت خواستی از تنظیمات گوشی فعالش کن.'); return; }
     state.settings.notify=true; await saveState(); render(); toast('اعلان سررسیدها فعال شد.');
   }catch(_){ toast('فعال‌سازی اعلان ممکن نشد.'); }
+}
+async function widgetRefresh(){
+  const r=await pushWidget();
+  if(r.ok) toast(r.count?'ویجت به‌روز شد.':'ویجت به‌روز شد (سررسیدی در انتظار نیست).');
+  else toast('ارتباط با ویجت برقرار نشد: '+r.error);
 }
 async function nativeDisable(){ state.settings.notify=false; await saveState(); render(); toast('اعلان‌ها خاموش شد.'); }
 async function nativeTest(){
@@ -1742,6 +1766,12 @@ function nativeNotifCard(){
     :`<small>چند روز مانده به هر سررسید روی گوشی اعلان بگیر. این اعلان‌ها توسط خود اندروید ثبت می‌شوند و حتی وقتی برنامه بسته است و اینترنت نیست می‌آیند. برای این کار گوشی از تو اجازه می‌خواهد.</small>
       <button class="btn" data-act="notifon">فعال‌سازی اعلان‌ها</button>`;
   return `<h2>اعلان‌ها</h2><div class="card"><div class="stack">${body}</div></div>`;
+}
+function nativeWidgetCard(){
+  if(!IS_NATIVE) return '';
+  return `<h2>ویجت صفحهٔ اصلی</h2><div class="card"><div class="stack">
+    <small>روی صفحهٔ اصلی گوشی انگشتت را نگه دار ← «ویجت‌ها» ← «اقساط». اگر ویجت خالی بود، دکمهٔ زیر را بزن. اگر باز هم خالی ماند، ویجت را از صفحهٔ اصلی پاک کن و دوباره اضافه کن.</small>
+    <button class="btn ghost" data-act="widgetpush">به‌روزرسانی ویجت</button></div></div>`;
 }
 function nativeBanner(){
   if(!IS_NATIVE||state.settings.notify||state.settings.notifyAsked) return '';
@@ -1927,6 +1957,7 @@ document.addEventListener('click',async e=>{
   if(act==='notiftest'){ await nativeTest(); return; }
   if(act==='notiflater'){ state.settings.notifyAsked=true; await commit(); return; }
   if(act==='exactset'){ await nativeExactSettings(); return; }
+  if(act==='widgetpush'){ await widgetRefresh(); return; }
   if(act==='go'){ location.hash=b.dataset.to; return; }
   if(act==='filter'){ listCat=b.dataset.cat; render(); return; }
   if(act==='filterkind'){ listKind=b.dataset.kind; render(); return; }
