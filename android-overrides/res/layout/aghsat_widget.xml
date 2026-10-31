@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Kept deliberately simple (only LinearLayout / TextView / View) so every launcher can draw it. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/w_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/widget_bg"
-    android:layoutDirection="rtl"
     android:orientation="vertical"
-    android:padding="14dp">
+    android:padding="12dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
@@ -21,7 +20,6 @@
             android:layout_weight="1"
             android:maxLines="1"
             android:text="@string/widget_label"
-            android:textAlignment="viewStart"
             android:textColor="#F1DEA1"
             android:textSize="12sp" />
 
@@ -38,13 +36,11 @@
         android:id="@+id/w_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:text="@string/widget_loading"
-        android:textAlignment="viewStart"
         android:textColor="#F6EBCB"
-        android:textSize="16sp"
+        android:textSize="15sp"
         android:textStyle="bold" />
 
     <TextView
@@ -53,9 +49,8 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textAlignment="viewStart"
         android:textColor="#EAD598"
-        android:textSize="24sp"
+        android:textSize="22sp"
         android:textStyle="bold" />
 
     <TextView
@@ -64,16 +59,15 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textAlignment="viewStart"
         android:textColor="#D5E4DE"
-        android:textSize="12sp" />
+        android:textSize="11sp" />
 
     <View
         android:id="@+id/w_div"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="6dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="4dp"
         android:background="#33FFFFFF" />
 
     <TextView
@@ -82,18 +76,15 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textAlignment="viewStart"
         android:textColor="#F6EBCB"
-        android:textSize="12sp" />
+        android:textSize="11sp" />
 
     <TextView
         android:id="@+id/w_r2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textAlignment="viewStart"
         android:textColor="#F6EBCB"
-        android:textSize="12sp" />
+        android:textSize="11sp" />
 </LinearLayout>
