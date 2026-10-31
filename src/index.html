@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>مدیریت اقساط</title>
+<title>قسطتو</title>
 <meta name="theme-color" content="#0B3B35">
 <script>try{var u=localStorage.getItem("aghsat-ui");if(u&&u!=="classic")document.documentElement.setAttribute("data-ui",u)}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -789,6 +789,10 @@ html:where([data-ui="glass"]){background:var(--bg)}
 .uiprev .c{inset:10px 10px auto 10px;height:26px;border-radius:10px}
 .uiprev .d{bottom:9px;inset-inline-start:12px;width:18px;height:18px;border-radius:50%}
 .uiprev .e{bottom:13px;inset-inline-end:12px;width:34px;height:10px;border-radius:99px}
+
+/* native reminders banner */
+.nbanner{padding:14px 16px;margin-bottom:14px}
+.nbanner small{display:block;margin-top:2px}
 </style>
 </head>
 <body>
@@ -1003,7 +1007,7 @@ function payBtn(r){
   return `<button class="pay ${r.paid?'on':''}" data-act="pay" data-id="${r.item.id}" data-i="${r.i}" aria-label="${r.paid?'لغو پرداخت':'ثبت پرداخت'} ${esc(rowNameRaw(r))} ${esc(r.item.title)}" aria-pressed="${!!r.paid}">${ICON_CHECK}</button>`;
 }
 function emptyState(){
-  return `${head('مدیریت اقساط')}<div class="empty"><h2 style="margin-top:0">هنوز تعهدی ثبت نشده</h2>
+  return `${head('قسطتو')}<div class="empty"><h2 style="margin-top:0">هنوز تعهدی ثبت نشده</h2>
   <p>وام، قرض‌الحسنه، خرید اقساطی، چک یا هزینه‌ای مثل شارژ ساختمان را اضافه کن تا سررسیدها را ببینی.</p>
   <a class="btn" href="#/new">افزودن تعهد</a></div>`;
 }
@@ -1054,7 +1058,7 @@ function dashView(){
   const chart=`<h2>فشار مالی ۱۲ ماه آینده</h2><div class="card chart" role="img" aria-label="نمودار مجموع پرداخت‌نشدهٔ هر ماه">${months.map((x,k)=>
     `<div class="col ${k===0?'cur':''}"><div class="v">${x.v?compact(x.v):''}</div><div class="b" style="height:${Math.max(3,Math.round(x.v/max*90))}px"></div><div class="m">${MONTHS[x.m-1]}</div><div class="y">${fa(x.y)}</div></div>`).join('')}</div>
     <a class="btn ghost block" style="margin-top:12px" href="#/report">گزارش کامل و نمودارها</a>`;
-  return `${head('مدیریت اقساط')}${hero}${stats}${upHtml}${chart}`;
+  return `${head('قسطتو')}${nativeBanner()}${hero}${stats}${upHtml}${chart}`;
 }
 
 let listCat='all', listKind='all';
@@ -1462,6 +1466,13 @@ function helpView(){
     <li><span class="tag chg">تغییر کرده</span> مبلغ یا تاریخ این ردیف دستی عوض شده است.</li></ul>
     <p>برنامه اعلان پس‌زمینه نمی‌فرستد. یادآوری‌ها وقتی دیده می‌شوند که برنامه را باز کنی، پس هر چند روز یک بار سر بزن.</p>`)}
 
+  ${D('اعلان و ویجت (نسخهٔ نصبی اندروید)',`<ul>
+    <li><b>اعلان:</b> در تنظیمات، بخش «اعلان‌ها»، دکمهٔ «فعال‌سازی اعلان‌ها» را بزن و در پنجرهٔ گوشی اجازه بده. هر سررسید چند روز قبل (طبق «یادآوری سررسید»)، روز سررسید و روز بعد از آن اعلان می‌دهد. چند سررسید در یک روز، در یک اعلان خلاصه می‌شوند.</li>
+    <li><b>بدون اینترنت و سرور:</b> اعلان‌ها توسط خود اندروید زمان‌بندی می‌شوند، پس حتی وقتی برنامه بسته است هم می‌آیند. هر بار برنامه را باز کنی یا پرداختی ثبت کنی، زمان‌بندی دوباره به‌روز می‌شود. اعلان ۶۰ روز آینده زمان‌بندی می‌شود، پس هر چند هفته یک بار برنامه را باز کن.</li>
+    <li><b>اعلان آزمایشی</b> نشان می‌دهد اجازه و تنظیمات درست است.</li>
+    <li><b>اگر اعلان دیر آمد یا نیامد:</b> در تنظیمات گوشی، برنامهٔ «قسطتو» را از «بهینه‌سازی باتری» مستثنا کن (حالت «بدون محدودیت»). در بعضی گوشی‌ها (شیائومی، سامسونگ، هواوی، اوپو) صرفه‌جویی باتری اعلان را عقب می‌اندازد. اگر دکمهٔ «تنظیم آلارم دقیق» را دیدی، آن را هم فعال کن.</li>
+    <li><b>ویجت:</b> روی صفحهٔ اصلی گوشی انگشتت را نگه دار ← «ویجت‌ها» ← «اقساط». سررسید بعدی، مبلغ و دو سررسید بعدی را نشان می‌دهد و با لمس، برنامه باز می‌شود. ویجت بعد از هر ثبت پرداخت و هر بار باز کردن برنامه به‌روز می‌شود و روزهای باقی‌مانده را خودش هر روز تازه می‌کند.</li></ul>`)}
+
   ${D('تنظیمات',`<ul>
     <li><b>یادآوری سررسید:</b> چند روز مانده به سررسید، برچسب «سررسید نزدیک» را ببینی.</li>
     <li><b>ظاهر برنامه:</b> مطابق گوشی، روشن یا تیره.</li>
@@ -1488,9 +1499,9 @@ function helpView(){
 
 
 /* ================= about ================= */
-const APP_VERSION='6.2';
+const APP_VERSION='6.3';
 // اطلاعات تماس را اینجا پر کن؛ فقط موردهای پرشده در صفحهٔ «درباره ما» نمایش داده می‌شوند.
-const ABOUT={developer:'',email:'',website:'',telegram:''};
+const ABOUT={developer:'شرکت سامان گستر صبح نیشابور',email:'info@sgsn.ir',website:'www.sgsn.ir',telegram:'samangostar_sn'};
 function aboutView(){
   const c=ABOUT, contact=[];
   if(c.developer) contact.push(`<div class="setrow"><span>سازنده</span><b>${esc(c.developer)}</b></div>`);
@@ -1500,7 +1511,7 @@ function aboutView(){
   return `<div class="topbar"><button class="back" data-act="go" data-to="#/settings" aria-label="بازگشت">›</button><h1>درباره ما</h1></div>
   <div class="abouthero">
     <img src="icon-192.png" width="84" height="84" alt="">
-    <h2>مدیریت اقساط</h2>
+    <h2>قسطتو</h2>
     <p>دستیار شخصی برای پیگیری وام‌ها، چک‌ها و اقساط</p>
     <span class="ver">نسخهٔ ${fa(APP_VERSION.replace('.','٫'))}</span>
   </div>
@@ -1525,6 +1536,7 @@ function aboutView(){
     <li>ویرایش مبلغ و تاریخ هر قسط و ثبت پرداخت مازاد</li>
     <li>دسته‌بندی و رنگ‌بندی دلخواه</li>
     <li>حالت روشن و تیره و چهار سبک ظاهری قابل انتخاب</li>
+    <li>در نسخهٔ نصبی اندروید: اعلان سررسید و ویجت صفحهٔ اصلی</li>
     <li>پشتیبان‌گیری و بازیابی</li></ul></div>
 
   <h2>نکتهٔ مهم</h2>
@@ -1576,6 +1588,7 @@ function settingsView(){
         <option value="light" ${s.theme==='light'?'selected':''}>روشن</option>
         <option value="dark" ${s.theme==='dark'?'selected':''}>تیره</option></select></div>
   </div>
+  ${nativeNotifCard()}
   ${uiCard()}
   <h2>دسته‌بندی‌ها</h2>
   <div class="card">
@@ -1608,10 +1621,134 @@ async function nativeShareFile(text){
     if(!P||!P.Filesystem||!P.Share) return false;
     const name=`aghsat-backup-${new Date().toISOString().slice(0,10)}.txt`;
     const r=await P.Filesystem.writeFile({path:name,data:text,directory:'CACHE',encoding:'utf8'});
-    await P.Share.share({title:'پشتیبان اقساط',text:'پشتیبان برنامهٔ مدیریت اقساط',url:r.uri,dialogTitle:'ذخیره یا ارسال پشتیبان'});
+    await P.Share.share({title:'پشتیبان اقساط',text:'پشتیبان برنامهٔ قسطتو',url:r.uri,dialogTitle:'ذخیره یا ارسال پشتیبان'});
     return true;
   }catch(e){ return /cancel/i.test(String((e&&e.message)||e)); }
 }
+
+/* ================= Android app: reminders (local notifications) + home-screen widget ================= */
+const NATIVE_CH='aghsat-reminders';
+const NATIVE_ICON='ic_stat_aghsat';
+const LNP=()=>window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.LocalNotifications;
+const WGT=()=>window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.AghsatWidget;
+let _chReady=false;
+async function ensureChannel(){
+  const P=LNP(); if(!P||_chReady) return;
+  try{ await P.createChannel({id:NATIVE_CH,name:'یادآوری سررسید',description:'یادآوری اقساط، چک‌ها و هزینه‌های دوره‌ای',importance:4,visibility:1,vibration:true}); _chReady=true; }catch(_){}
+}
+// What to schedule: for every unpaid row, a reminder N days before, one on the due day and one the day after.
+function nativePlan(){
+  const t=todayJdn(), rem=state.settings.remind==null?3:state.settings.remind;
+  const hour=state.settings.notifyHour==null?9:state.settings.notifyHour, now=Date.now(), limit=t+60, groups={};
+  allRows().forEach(r=>{
+    if(r.paid) return;
+    const add=(j,type)=>{
+      if(j>limit) return;
+      const g=d2g(j), at=new Date(g.gy,g.gm-1,g.gd,hour,0,0,0);
+      if(at.getTime()<=now+60000) return;
+      const key=j+':'+type; (groups[key]=groups[key]||{j,type,at,items:[]}).items.push(r);
+    };
+    if(rem>0) add(r.jdn-rem,'soon');
+    add(r.jdn,'due');
+    add(r.jdn+1,'late');
+  });
+  const idx={soon:0,due:1,late:2};
+  return Object.values(groups).map(g=>{
+    const n=g.items.length, first=g.items[0], rest=n>1?` و ${fa(n-1)} مورد دیگر`:'';
+    let title;
+    if(g.type==='soon') title=n===1?`سررسید ${first.item.title}، ${rel(rem)}`:`${fa(n)} سررسید تا ${fa(rem)} روز دیگر`;
+    else if(g.type==='due') title=n===1?`امروز سررسید ${first.item.title}`:`امروز ${fa(n)} سررسید داری`;
+    else title=n===1?`سررسید گذشته: ${first.item.title}`:`${fa(n)} سررسید گذشته`;
+    const lines=g.items.slice(0,6).map(r=>`${r.item.title}: ${money(r.amount)} تومان`);
+    return {id:g.j*4+idx[g.type],title,body:`${lines[0]}${rest}`,largeBody:lines.join('\n')+(n>6?`\nو ${fa(n-6)} مورد دیگر`:''),
+      schedule:{at:g.at,allowWhileIdle:true},channelId:NATIVE_CH,smallIcon:NATIVE_ICON,extra:{route:'#/'}};
+  });
+}
+// Data for the home-screen widget: texts are formatted here, the widget only displays them.
+function pushWidget(){
+  const W=WGT(); if(!W) return;
+  try{
+    const t=todayJdn(), base=g2d(1970,1,1), cur=d2j(t), all=allRows().filter(r=>!r.paid).sort((a,b)=>a.jdn-b.jdn||a.i-b.i);
+    const monthLeft=sum(all.filter(r=>r.jdn<t||(r.jy===cur.jy&&r.jm===cur.jm)));
+    const payload={updated:Date.now(),m:money(monthLeft),rows:all.slice(0,3).map(r=>({t:r.item.title,a:money(r.amount),d:fmtDate(r.jdn),day:r.jdn-base,k:rowNameRaw(r)}))};
+    const res=W.update({json:JSON.stringify(payload)}); if(res&&res.catch) res.catch(()=>{});
+  }catch(_){}
+}
+async function nativeSync(){
+  pushWidget();
+  const P=LNP(); if(!P) return;
+  try{
+    const pend=await P.getPending();
+    const old=((pend&&pend.notifications)||[]).filter(n=>n.id>1000).map(n=>({id:n.id}));
+    if(old.length) await P.cancel({notifications:old});
+    if(!state.settings.notify) return;
+    const perm=await P.checkPermissions(); if(!perm||perm.display!=='granted') return;
+    await ensureChannel();
+    const plan=nativePlan(); if(plan.length) await P.schedule({notifications:plan});
+  }catch(_){}
+}
+let _nsT=null;
+function nativeSyncSoon(){ clearTimeout(_nsT); _nsT=setTimeout(nativeSync,700); }
+if(IS_NATIVE){
+  // every save (add, pay, edit, settings) refreshes the scheduled reminders and the widget
+  const _save=saveState;
+  saveState=async function(){ await _save(); nativeSyncSoon(); };
+}
+async function nativeEnable(){
+  const P=LNP(); if(!P){ toast('اعلان در این دستگاه در دسترس نیست.'); return; }
+  try{
+    let perm=await P.checkPermissions();
+    if(perm.display==='prompt'||perm.display==='prompt-with-rationale') perm=await P.requestPermissions();
+    state.settings.notifyAsked=true;
+    if(perm.display!=='granted'){ state.settings.notify=false; await saveState(); render(); toast('اجازهٔ اعلان داده نشد. هر وقت خواستی از تنظیمات گوشی فعالش کن.'); return; }
+    state.settings.notify=true; await saveState(); render(); toast('اعلان سررسیدها فعال شد.');
+  }catch(_){ toast('فعال‌سازی اعلان ممکن نشد.'); }
+}
+async function nativeDisable(){ state.settings.notify=false; await saveState(); render(); toast('اعلان‌ها خاموش شد.'); }
+async function nativeTest(){
+  const P=LNP(); if(!P) return;
+  try{
+    const perm=await P.checkPermissions();
+    if(perm.display!=='granted'){ toast('اول اجازهٔ اعلان را فعال کن.'); return; }
+    await ensureChannel();
+    await P.schedule({notifications:[{id:1,title:'یادآوری آزمایشی',body:'اعلان‌ها روی این گوشی درست کار می‌کنند.',schedule:{at:new Date(Date.now()+5000),allowWhileIdle:true},channelId:NATIVE_CH,smallIcon:NATIVE_ICON}]});
+    toast('تا چند ثانیهٔ دیگر یک اعلان می‌آید. می‌توانی از برنامه خارج شوی.');
+  }catch(_){ toast('ارسال اعلان آزمایشی ممکن نشد.'); }
+}
+async function nativeExactSettings(){ try{ await LNP().changeExactNotificationSetting(); }catch(_){ toast('این گزینه در این دستگاه در دسترس نیست.'); } }
+async function updateNativeStat(){
+  const el=$('#nstat'); const P=LNP(); if(!el||!P) return;
+  try{
+    const pend=await P.getPending(); const n=((pend&&pend.notifications)||[]).filter(x=>x.id>1000).length;
+    let extra='';
+    try{
+      if(P.checkExactNotificationSetting){
+        const e=await P.checkExactNotificationSetting();
+        if(e&&e.exact_alarm==='denied'){ extra=' آلارم دقیق مجاز نیست؛ اعلان‌ها ممکن است چند دقیقه دیرتر بیایند.'; const b=$('#exactbtn'); if(b) b.hidden=false; }
+      }
+    }catch(_){}
+    el.textContent=`${fa(n)} اعلان زمان‌بندی شده است.`+extra;
+  }catch(_){}
+}
+function nativeNotifCard(){
+  if(!IS_NATIVE) return '';
+  const s=state.settings;
+  const body=s.notify
+    ?`<div class="setrow" style="padding:0"><span>ساعت یادآوری</span><select data-set="notifyHour" aria-label="ساعت یادآوری">${[7,8,9,10,12,15,18,20].map(h=>`<option value="${h}" ${(s.notifyHour==null?9:s.notifyHour)===h?'selected':''}>${fa(h)}:۰۰</option>`).join('')}</select></div>
+      <small>برای هر سررسید، چند روز قبل (طبق «یادآوری سررسید» بالا)، روز سررسید و روز بعد از آن اعلان می‌گیری. اگر پرداخت را ثبت کنی، اعلان‌های آن خودکار حذف می‌شوند.</small>
+      <small id="nstat"></small>
+      <div class="actions" style="margin:0"><button class="btn ghost" data-act="notiftest">اعلان آزمایشی</button><button class="btn danger" data-act="notifoff">خاموش کردن</button></div>
+      <button class="btn ghost" id="exactbtn" data-act="exactset" hidden>تنظیم آلارم دقیق</button>`
+    :`<small>چند روز مانده به هر سررسید روی گوشی اعلان بگیر. این اعلان‌ها توسط خود اندروید ثبت می‌شوند و حتی وقتی برنامه بسته است و اینترنت نیست می‌آیند. برای این کار گوشی از تو اجازه می‌خواهد.</small>
+      <button class="btn" data-act="notifon">فعال‌سازی اعلان‌ها</button>`;
+  return `<h2>اعلان‌ها</h2><div class="card"><div class="stack">${body}</div></div>`;
+}
+function nativeBanner(){
+  if(!IS_NATIVE||state.settings.notify||state.settings.notifyAsked) return '';
+  return `<div class="card nbanner"><b>اعلان سررسیدها</b><small>می‌خواهی چند روز مانده به هر سررسید روی گوشی یادآوری بگیری؟</small>
+    <div class="actions" style="margin-top:12px"><button class="btn" data-act="notifon">فعال‌سازی</button><button class="btn ghost" data-act="notiflater">بعداً</button></div></div>`;
+}
+
 const backupText=()=>JSON.stringify({app:'aghsat',version:5,exported:new Date().toISOString(),...state},null,1);
 function parseBackup(text){
   const a=text.indexOf('{'), b=text.lastIndexOf('}');
@@ -1723,6 +1860,7 @@ function render(){
   $('#app').innerHTML=html;
   document.querySelectorAll('nav [data-nav]').forEach(a=>a.classList.toggle('on',a.dataset.nav===nav));
   if($('#form')) syncForm();
+  if(IS_NATIVE&&route==='settings') updateNativeStat();
   if(route==='report'){
     const box=$('#mchart'), c=box&&box.querySelector('.col.cur');
     if(box&&c){ const b=box.getBoundingClientRect(), r=c.getBoundingClientRect(); box.scrollLeft+=(r.left+r.width/2)-(b.left+b.width/2); }
@@ -1784,6 +1922,11 @@ document.addEventListener('click',async e=>{
     const u=UIS.find(x=>x.id===b.dataset.ui); if(!u) return;
     state.settings.ui=u.id; applyTheme(); await commit(); toast(`سبک «${u.name}» فعال شد.`); return;
   }
+  if(act==='notifon'){ await nativeEnable(); return; }
+  if(act==='notifoff'){ await nativeDisable(); return; }
+  if(act==='notiftest'){ await nativeTest(); return; }
+  if(act==='notiflater'){ state.settings.notifyAsked=true; await commit(); return; }
+  if(act==='exactset'){ await nativeExactSettings(); return; }
   if(act==='go'){ location.hash=b.dataset.to; return; }
   if(act==='filter'){ listCat=b.dataset.cat; render(); return; }
   if(act==='filterkind'){ listKind=b.dataset.kind; render(); return; }
@@ -1959,7 +2102,7 @@ document.addEventListener('change',async e=>{
   if(t.id==='f-custom') syncForm();
   if(t.name==='xmode') updatePreview();
   if(t.dataset.set){
-    state.settings[t.dataset.set]=t.dataset.set==='remind'?+t.value:t.value; applyTheme(); await saveState();
+    state.settings[t.dataset.set]=['remind','notifyHour'].includes(t.dataset.set)?+t.value:t.value; applyTheme(); await saveState();
   }
   if(t.id==='file'&&t.files[0]){
     try{ await applyBackup(parseBackup(await t.files[0].text())); }
@@ -1985,6 +2128,7 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeSheet(); });
   const saved=await loadState();
   if(saved) state=adopt(saved);
   applyTheme(); render();
+  if(IS_NATIVE) nativeSyncSoon();
   if(navigator.storage&&navigator.storage.persist) navigator.storage.persist().catch(()=>{});
   if('serviceWorker' in navigator&&!IS_NATIVE){
     const had=!!navigator.serviceWorker.controller; let reloading=false;
@@ -1992,7 +2136,7 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeSheet(); });
     navigator.serviceWorker.addEventListener('controllerchange',()=>{ if(had&&!reloading){ reloading=true; location.reload(); } });
   }
 })();
-document.addEventListener('visibilitychange',()=>{ if(!document.hidden && !$('#form') && !$('#sheet.open')) render(); });
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden){ if(IS_NATIVE) nativeSyncSoon(); if(!$('#form') && !$('#sheet.open')) render(); } });
 </script>
 </body>
 </html>
