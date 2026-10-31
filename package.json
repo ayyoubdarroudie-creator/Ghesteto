@@ -1,6 +1,6 @@
 {
   "name": "aghsat-android",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": true,
   "description": "مدیریت اقساط، نسخهٔ اندروید (Capacitor)",
   "scripts": {
