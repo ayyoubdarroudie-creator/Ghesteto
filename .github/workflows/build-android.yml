@@ -5,6 +5,11 @@ on:
     branches: [main, master]
     tags: ['v*']
   workflow_dispatch:
+    inputs:
+      for_store:
+        description: "Build for Cafe Bazaar / Google Play (requires your own signing key in Secrets)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write   # needed only to attach the APK to a GitHub Release when you push a tag like v1.0.0
@@ -14,7 +19,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 40
     env:
-      # Optional: your own signing key (see README). Leave the secrets empty to use the bundled sideload key.
+      # true only when you run the workflow by hand and tick "for_store"
+      STORE_BUILD: ${{ inputs.for_store == true && 'true' || 'false' }}
+      OUT_NAME: ${{ inputs.for_store == true && 'aghsat-store.apk' || 'aghsat.apk' }}
+      # Your own signing key (see README). Required for store builds; optional for personal installs.
       KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
       KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
       KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
@@ -62,41 +70,18 @@ jobs:
           chmod +x ./gradlew
           ./gradlew assembleRelease --no-daemon
 
-      - name: Align and sign the APK
-        run: |
-          set -euo pipefail
-          BT="$(ls "$ANDROID_HOME/build-tools" | sort -V | tail -n1)"
-          TOOLS="$ANDROID_HOME/build-tools/$BT"
-          if [ -n "${KEYSTORE_BASE64:-}" ]; then
-            echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.keystore"
-            KS="$RUNNER_TEMP/release.keystore"
-            KS_PASS="$KEYSTORE_PASSWORD"
-            ALIAS="$KEY_ALIAS"
-            KEY_PASS="${KEY_PASSWORD:-$KEYSTORE_PASSWORD}"
-            echo "Signing with your own keystore."
-          else
-            KS="keystore/aghsat-sideload.keystore"
-            KS_PASS="aghsat-sideload"
-            ALIAS="aghsat"
-            KEY_PASS="aghsat-sideload"
-            echo "Signing with the bundled sideload keystore."
-          fi
-          IN="android/app/build/outputs/apk/release/app-release-unsigned.apk"
-          mkdir -p dist
-          "$TOOLS/zipalign" -p -f 4 "$IN" dist/aligned.apk
-          "$TOOLS/apksigner" sign --ks "$KS" --ks-pass "pass:$KS_PASS" --ks-key-alias "$ALIAS" --key-pass "pass:$KEY_PASS" --out dist/aghsat.apk dist/aligned.apk
-          "$TOOLS/apksigner" verify --print-certs dist/aghsat.apk
-          rm -f dist/aligned.apk dist/aghsat.apk.idsig
+      - name: Align, sign and check the APK
+        run: bash scripts/sign-apk.sh
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: aghsat-apk
-          path: dist/aghsat.apk
+          path: dist/*.apk
           if-no-files-found: error
 
       - name: Attach APK to the GitHub Release (tags only)
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/aghsat.apk
+          files: dist/*.apk
